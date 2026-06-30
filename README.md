@@ -1,6 +1,6 @@
 # DataLens · Browser Data Analysis
 
-A fully client-side data analysis application that runs entirely in the browser — no backend, no build tools, no installation required.
+A fully client-side data analysis application that runs entirely in the browser, no backend, no build tools, no installation required.
 
 ---
 
