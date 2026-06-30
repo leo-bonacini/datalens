@@ -83,15 +83,6 @@ datalens/
 
 ---
 
-## Deploying to GitHub Pages
-
-1. Push the repository to GitHub.
-2. Go to **Settings → Pages**.
-3. Under **Source**, choose the `main` branch and `/ (root)`.
-4. Click **Save**. The app will be live at `https://<username>.github.io/<repo>` within a minute.
-
----
-
 ## Keyboard Shortcuts
 
 | Key | Action |
