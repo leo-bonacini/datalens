@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DataLens</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+
+<!-- ── NAV ─────────────────────────────────────────────────────────────── -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-brand" aria-label="DataLens">
+    <span class="nav-logo" aria-hidden="true">📊</span>
+    <span class="nav-title">DataLens</span>
+  </div>
+
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="nav-links" id="nav-links" role="list">
+    <a href="#" class="nav-link active" data-section="import" data-i18n="nav.import" role="listitem">Import</a>
+    <a href="#" class="nav-link" data-section="explore" data-i18n="nav.explore" role="listitem">Explore</a>
+    <a href="#" class="nav-link" data-section="analyze" data-i18n="nav.analyze" role="listitem">Analyze</a>
+    <a href="#" class="nav-link" data-section="visualize" data-i18n="nav.visualize" role="listitem">Visualize</a>
+    <a href="#" class="nav-link" data-section="process" data-i18n="nav.process" role="listitem">Process</a>
+  </div>
+
+  <div class="nav-controls">
+    <button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌙</button>
+    <select id="lang-select" class="lang-select" aria-label="Select language">
+      <option value="en">🇺🇸 EN</option>
+      <option value="pt">🇧🇷 PT</option>
+      <option value="es">🇪🇸 ES</option>
+    </select>
+  </div>
+</nav>
+
+<!-- ── MAIN ────────────────────────────────────────────────────────────── -->
+<main class="main-content">
+
+  <!-- IMPORT ──────────────────────────────────────────────────────────── -->
+  <section id="section-import" class="section active" aria-labelledby="import-heading">
+    <div class="section-header">
+      <h2 id="import-heading" data-i18n="import.title">Import Data</h2>
+      <p data-i18n="import.subtitle">Upload a CSV file or choose a sample dataset</p>
+    </div>
+
+    <div class="drop-zone" id="drop-zone" role="button" tabindex="0"
+         aria-label="Drop zone for CSV file upload">
+      <div class="drop-zone-inner">
+        <div class="drop-icon" aria-hidden="true">📂</div>
+        <p class="drop-text" data-i18n="import.dropText">Drag and drop your CSV file here</p>
+        <p class="drop-or" data-i18n="import.or">or</p>
+        <button class="btn btn-primary" id="browse-btn" data-i18n="import.browse">Browse Files</button>
+        <input type="file" id="file-input" accept=".csv,.txt,.tsv" hidden aria-label="File input" />
+      </div>
+    </div>
+
+    <div class="samples-section">
+      <h3 data-i18n="import.samples">Sample Datasets</h3>
+      <div class="samples-grid">
+        <button class="sample-card" data-sample="sales" aria-label="Load Sales sample dataset">
+          <div class="sample-icon" aria-hidden="true">🛒</div>
+          <h4 data-i18n="import.sample.sales">Sales Data</h4>
+          <p data-i18n="import.sample.salesDesc">Monthly sales by region and product</p>
+        </button>
+        <button class="sample-card" data-sample="iris" aria-label="Load Iris sample dataset">
+          <div class="sample-icon" aria-hidden="true">🌸</div>
+          <h4 data-i18n="import.sample.iris">Iris Dataset</h4>
+          <p data-i18n="import.sample.irisDesc">Classic flower measurements</p>
+        </button>
+        <button class="sample-card" data-sample="weather" aria-label="Load Weather sample dataset">
+          <div class="sample-icon" aria-hidden="true">🌤️</div>
+          <h4 data-i18n="import.sample.weather">Weather Data</h4>
+          <p data-i18n="import.sample.weatherDesc">Temperature and precipitation records</p>
+        </button>
+      </div>
+    </div>
+
+    <div id="file-info" class="file-info hidden" role="status" aria-live="polite">
+      <div class="file-info-row">
+        <span class="file-info-icon" aria-hidden="true">✅</span>
+        <div class="file-info-text">
+          <p class="file-info-name" id="file-info-name"></p>
+          <p class="file-info-meta" id="file-info-meta"></p>
+        </div>
+        <button class="btn btn-secondary" id="explore-btn" data-i18n="import.exploreBtn">
+          Explore Data →
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPLORE ─────────────────────────────────────────────────────────── -->
+  <section id="section-explore" class="section" aria-labelledby="explore-heading">
+    <div class="section-header">
+      <h2 id="explore-heading" data-i18n="explore.title">Explore Data</h2>
+    </div>
+
+    <div class="no-data-msg" id="explore-no-data">
+      <span aria-hidden="true">📭</span>
+      <p data-i18n="common.noData">No data loaded. Please import a file first.</p>
+    </div>
+
+    <div id="explore-content" class="hidden">
+      <div class="toolbar" role="toolbar" aria-label="Table controls">
+        <div class="toolbar-left">
+          <label for="search-input" class="sr-only" data-i18n="explore.search">Search</label>
+          <input type="search" id="search-input" class="search-input"
+                 data-i18n-placeholder="explore.search" placeholder="Search…" aria-label="Search data" />
+          <label for="page-size" class="sr-only">Rows per page</label>
+          <select id="page-size" class="select-sm" aria-label="Rows per page">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          <span class="label-sm" data-i18n="explore.rowsPerPage" aria-hidden="true">rows per page</span>
+        </div>
+        <div class="toolbar-right">
+          <span id="row-count-display" class="row-count" aria-live="polite"></span>
+        </div>
+      </div>
+
+      <div class="table-wrapper" role="region" aria-label="Data table" tabindex="0">
+        <table id="data-table" class="data-table" aria-label="Dataset">
+          <thead id="table-head"></thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+
+      <nav class="pagination" id="pagination" aria-label="Table pagination"></nav>
+
+      <div class="column-info-section">
+        <h3 data-i18n="explore.columnInfo">Column Information</h3>
+        <div id="column-types-grid" class="column-types-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANALYZE ─────────────────────────────────────────────────────────── -->
+  <section id="section-analyze" class="section" aria-labelledby="analyze-heading">
+    <div class="section-header">
+      <h2 id="analyze-heading" data-i18n="analyze.title">Statistical Analysis</h2>
+    </div>
+
+    <div class="no-data-msg" id="analyze-no-data">
+      <span aria-hidden="true">📭</span>
+      <p data-i18n="common.noData">No data loaded. Please import a file first.</p>
+    </div>
+
+    <div id="analyze-content" class="hidden">
+      <div class="overview-cards" id="overview-cards" aria-label="Dataset overview"></div>
+
+      <h3 data-i18n="analyze.columnStats">Column Statistics</h3>
+      <div class="stats-grid" id="stats-grid"></div>
+
+      <div id="correlation-section" class="hidden">
+        <h3 data-i18n="analyze.correlation">Correlation Matrix</h3>
+        <div id="correlation-matrix" class="chart-box"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISUALIZE ───────────────────────────────────────────────────────── -->
+  <section id="section-visualize" class="section" aria-labelledby="visualize-heading">
+    <div class="section-header">
+      <h2 id="visualize-heading" data-i18n="visualize.title">Visualizations</h2>
+    </div>
+
+    <div class="no-data-msg" id="visualize-no-data">
+      <span aria-hidden="true">📭</span>
+      <p data-i18n="common.noData">No data loaded. Please import a file first.</p>
+    </div>
+
+    <div id="visualize-content" class="hidden">
+      <div class="viz-panel">
+        <div class="chart-type-bar" id="chart-type-selector" role="group" aria-label="Chart type">
+          <button class="chart-type-btn active" data-type="bar">📊 <span data-i18n="viz.bar">Bar</span></button>
+          <button class="chart-type-btn" data-type="line">📈 <span data-i18n="viz.line">Line</span></button>
+          <button class="chart-type-btn" data-type="scatter">⚬ <span data-i18n="viz.scatter">Scatter</span></button>
+          <button class="chart-type-btn" data-type="histogram">📉 <span data-i18n="viz.histogram">Histogram</span></button>
+          <button class="chart-type-btn" data-type="pie">🥧 <span data-i18n="viz.pie">Pie</span></button>
+          <button class="chart-type-btn" data-type="box">📦 <span data-i18n="viz.box">Box</span></button>
+        </div>
+
+        <div class="axis-controls">
+          <div class="control-group">
+            <label for="x-axis-select" data-i18n="viz.xAxis">X Axis</label>
+            <select id="x-axis-select" class="select-control"></select>
+          </div>
+          <div class="control-group" id="y-axis-group">
+            <label for="y-axis-select" data-i18n="viz.yAxis">Y Axis</label>
+            <select id="y-axis-select" class="select-control"></select>
+          </div>
+          <div class="control-group">
+            <label for="color-select" data-i18n="viz.colorBy">Color By</label>
+            <select id="color-select" class="select-control">
+              <option value="" data-i18n="viz.none">None</option>
+            </select>
+          </div>
+          <div class="axis-actions">
+            <button class="btn btn-primary" id="generate-chart-btn" data-i18n="viz.generate">Generate</button>
+            <button class="btn btn-secondary" id="download-chart-btn" data-i18n="viz.download">Download PNG</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="chart-container" class="chart-box" aria-label="Chart display area"></div>
+
+      <div id="auto-charts-section">
+        <h3 data-i18n="viz.autoCharts">Auto-Generated Charts</h3>
+        <div id="auto-charts-grid" class="auto-charts-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS ─────────────────────────────────────────────────────────── -->
+  <section id="section-process" class="section" aria-labelledby="process-heading">
+    <div class="section-header">
+      <h2 id="process-heading" data-i18n="process.title">Data Processing</h2>
+    </div>
+
+    <div class="no-data-msg" id="process-no-data">
+      <span aria-hidden="true">📭</span>
+      <p data-i18n="common.noData">No data loaded. Please import a file first.</p>
+    </div>
+
+    <div id="process-content" class="hidden">
+      <div class="process-layout">
+        <!-- Operations -->
+        <div class="process-ops">
+          <h3 data-i18n="process.operations">Operations</h3>
+
+          <div class="op-card">
+            <h4 data-i18n="process.removeDuplicates">Remove Duplicates</h4>
+            <p class="op-desc" data-i18n="process.removeDuplicatesDesc">Remove duplicate rows from the dataset</p>
+            <button class="btn btn-warning btn-sm" id="remove-dupes-btn" data-i18n="process.apply">Apply</button>
+          </div>
+
+          <div class="op-card">
+            <h4 data-i18n="process.missingValues">Handle Missing Values</h4>
+            <div class="op-controls">
+              <label for="missing-col-select" class="sr-only">Column</label>
+              <select id="missing-col-select" class="select-control">
+                <option value="__all__" data-i18n="process.allColumns">All Columns</option>
+              </select>
+              <label for="missing-strategy" class="sr-only">Strategy</label>
+              <select id="missing-strategy" class="select-control">
+                <option value="remove" data-i18n="process.removeRows">Remove rows</option>
+                <option value="mean" data-i18n="process.fillMean">Fill with mean</option>
+                <option value="median" data-i18n="process.fillMedian">Fill with median</option>
+                <option value="mode" data-i18n="process.fillMode">Fill with mode</option>
+                <option value="value" data-i18n="process.fillValue">Fill with value</option>
+              </select>
+              <input type="text" id="fill-value-input" class="input-control hidden"
+                     data-i18n-placeholder="process.enterValue" placeholder="Enter value…"
+                     aria-label="Fill value" />
+              <button class="btn btn-warning btn-sm" id="handle-missing-btn" data-i18n="process.apply">Apply</button>
+            </div>
+          </div>
+
+          <div class="op-card">
+            <h4 data-i18n="process.renameColumn">Rename Column</h4>
+            <div class="op-controls">
+              <label for="rename-col-select" class="sr-only">Column to rename</label>
+              <select id="rename-col-select" class="select-control"></select>
+              <input type="text" id="rename-new-name" class="input-control"
+                     data-i18n-placeholder="process.newName" placeholder="New name…"
+                     aria-label="New column name" />
+              <button class="btn btn-warning btn-sm" id="rename-col-btn" data-i18n="process.apply">Apply</button>
+            </div>
+          </div>
+
+          <div class="op-card">
+            <h4 data-i18n="process.filterRows">Filter Rows</h4>
+            <div class="op-controls">
+              <label for="filter-col-select" class="sr-only">Column to filter</label>
+              <select id="filter-col-select" class="select-control"></select>
+              <label for="filter-op" class="sr-only">Filter operator</label>
+              <select id="filter-op" class="select-control">
+                <option value="eq" data-i18n="process.filterEq">equals</option>
+                <option value="neq" data-i18n="process.filterNeq">not equals</option>
+                <option value="gt" data-i18n="process.filterGt">greater than</option>
+                <option value="lt" data-i18n="process.filterLt">less than</option>
+                <option value="contains" data-i18n="process.filterContains">contains</option>
+              </select>
+              <input type="text" id="filter-value" class="input-control"
+                     data-i18n-placeholder="process.filterValue" placeholder="Value…"
+                     aria-label="Filter value" />
+              <button class="btn btn-warning btn-sm" id="filter-rows-btn" data-i18n="process.apply">Apply</button>
+            </div>
+          </div>
+
+          <div class="op-card">
+            <h4 data-i18n="process.calcColumn">Add Calculated Column</h4>
+            <div class="op-controls">
+              <input type="text" id="calc-col-name" class="input-control"
+                     data-i18n-placeholder="process.calcColName" placeholder="Column name…"
+                     aria-label="New column name" />
+              <input type="text" id="calc-expression" class="input-control"
+                     data-i18n-placeholder="process.calcExpression" placeholder="e.g. revenue - cost"
+                     aria-label="Expression" />
+              <p class="op-hint" data-i18n="process.calcHint">Use column names as variables</p>
+              <button class="btn btn-warning btn-sm" id="calc-col-btn" data-i18n="process.apply">Apply</button>
+            </div>
+          </div>
+
+          <div class="export-actions">
+            <button class="btn btn-primary" id="export-csv-btn" data-i18n="process.exportCSV">Export as CSV</button>
+            <button class="btn btn-secondary" id="undo-btn" data-i18n="process.undo">Undo</button>
+          </div>
+        </div>
+
+        <!-- History -->
+        <div class="process-sidebar">
+          <h3 data-i18n="process.history">Operation History</h3>
+          <div id="op-history" class="op-history" aria-live="polite"></div>
+          <div id="process-stats" class="process-stats" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── LOADING OVERLAY ──────────────────────────────────────────────────── -->
+<div id="loading-overlay" class="loading-overlay hidden" role="status" aria-label="Loading">
+  <div class="spinner" aria-hidden="true"></div>
+  <p data-i18n="common.loading">Processing…</p>
+</div>
+
+<!-- ── TOAST CONTAINER ──────────────────────────────────────────────────── -->
+<div id="toast-container" class="toast-container" aria-live="assertive" aria-atomic="true"></div>
+
+<!-- ── KEYBOARD HELP ─────────────────────────────────────────────────────── -->
+<div id="kbd-modal" class="modal-overlay hidden" role="dialog" aria-modal="true"
+     aria-labelledby="kbd-title">
+  <div class="modal-box">
+    <h3 id="kbd-title" data-i18n="kbd.title">Keyboard Shortcuts</h3>
+    <table class="kbd-table">
+      <tbody>
+        <tr><td><kbd>1</kbd>–<kbd>5</kbd></td><td data-i18n="kbd.navigate">Navigate sections</td></tr>
+        <tr><td><kbd>T</kbd></td><td data-i18n="kbd.theme">Toggle theme</td></tr>
+        <tr><td><kbd>?</kbd></td><td data-i18n="kbd.help">Show this help</td></tr>
+        <tr><td><kbd>Esc</kbd></td><td data-i18n="kbd.close">Close / dismiss</td></tr>
+      </tbody>
+    </table>
+    <button class="btn btn-secondary" id="kbd-close" data-i18n="kbd.closeBtn">Close</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
