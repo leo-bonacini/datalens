@@ -1,8 +1,6 @@
 # DataLens · Browser Data Analysis
 
-A fully client-side data analysis application that runs entirely in the browser — no backend, no build tools, no installation required. Deploy to GitHub Pages and share the URL.
-
-**[Live Demo →](https://leo-bonacini.github.io/datalens)**
+A fully client-side data analysis application that runs entirely in the browser — no backend, no build tools, no installation required.
 
 ---
 
@@ -109,9 +107,3 @@ datalens/
 
 > Import a CSV file or pick one of the three built-in datasets, then explore,
 > analyze, visualize, and process — entirely in the browser.
-
----
-
-## License
-
-MIT
