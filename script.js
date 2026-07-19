@@ -1495,6 +1495,15 @@ function init() {
   });
 
   initKeyboard();
+  loadVisitCounter();
+}
+
+function loadVisitCounter() {
+  const el = document.getElementById('visit-counter');
+  fetch('https://abacus.jasoncameron.dev/hit/datalens-leobonacini/visits')
+    .then(res => res.json())
+    .then(data => { el.textContent = `👁 ${data.value.toLocaleString()} visits`; })
+    .catch(() => { el.textContent = '👁 — visits'; });
 }
 
 document.addEventListener('DOMContentLoaded', init);
