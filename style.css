@@ -1,7 +1,4 @@
-/* ================================================================
-   DataLens · style.css
-   Light / dark theme via CSS custom properties
-   ================================================================ */
+/* DataLens: light / dark theme via CSS custom properties */
 
 /* Reset & base */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
