@@ -38,7 +38,7 @@ A fully client-side data analysis application that runs entirely in the browser,
 - Export the processed dataset as CSV
 
 ### User Experience
-- Light and dark themes — preference saved in the browser
+- Light and dark themes - preference saved in the browser
 - Fully responsive layout for desktop and mobile
 - Keyboard shortcuts: `1–5` navigate sections, `T` toggle theme, `?` show shortcuts, `Esc` dismiss
 - WCAG-friendly markup with proper ARIA roles and labels
@@ -67,7 +67,7 @@ A fully client-side data analysis application that runs entirely in the browser,
 | Logic | Vanilla ES6+ JavaScript, no framework |
 | Hosting | GitHub Pages (static files only) |
 
-No Node.js, no npm, no build step — open `index.html` in a browser and it works.
+No Node.js, no npm, no build step - open `index.html` in a browser and it works.
 
 ---
 
@@ -97,4 +97,4 @@ datalens/
 ## Screenshots
 
 > Import a CSV file or pick one of the three built-in datasets, then explore,
-> analyze, visualize, and process — entirely in the browser.
+> analyze, visualize, and process - entirely in the browser.

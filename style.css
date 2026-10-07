@@ -3,7 +3,7 @@
    Light / dark theme via CSS custom properties
    ================================================================ */
 
-/* ── RESET & BASE ─────────────────────────────────────────────── */
+/* Reset & base */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { scroll-behavior: smooth; }
@@ -18,7 +18,7 @@ body {
   min-height: 100vh;
 }
 
-/* ── CSS VARIABLES · LIGHT ────────────────────────────────────── */
+/* CSS variables · light */
 :root {
   --bg-primary:    #f8fafc;
   --bg-secondary:  #ffffff;
@@ -54,7 +54,7 @@ body {
   --transition: 0.2s ease;
 }
 
-/* ── CSS VARIABLES · DARK ─────────────────────────────────────── */
+/* CSS variables · dark */
 [data-theme="dark"] {
   --bg-primary:    #0f172a;
   --bg-secondary:  #1e293b;
@@ -77,7 +77,7 @@ body {
   --shadow-lg: 0 10px 30px rgba(0,0,0,.4);
 }
 
-/* ── ACCESSIBILITY ────────────────────────────────────────────── */
+/* Accessibility */
 .sr-only {
   position: absolute; width: 1px; height: 1px;
   padding: 0; margin: -1px; overflow: hidden;
@@ -89,7 +89,7 @@ body {
   outline-offset: 2px;
 }
 
-/* ── NAVBAR ───────────────────────────────────────────────────── */
+/* Navbar */
 .navbar {
   position: sticky;
   top: 0;
@@ -152,7 +152,7 @@ body {
 }
 .icon-btn:hover { background: var(--bg-hover); }
 
-/* ── FOOTER ───────────────────────────────────────────────────── */
+/* Footer */
 .site-footer {
   display: flex;
   justify-content: center;
@@ -193,14 +193,14 @@ body {
   transition: var(--transition);
 }
 
-/* ── MAIN LAYOUT ──────────────────────────────────────────────── */
+/* Main layout */
 .main-content {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem 1.5rem 4rem;
 }
 
-/* ── SECTIONS ─────────────────────────────────────────────────── */
+/* Sections */
 .section { display: none; }
 .section.active { display: block; }
 
@@ -213,7 +213,7 @@ body {
 }
 .section-header p { color: var(--text-secondary); }
 
-/* ── NO DATA MESSAGE ──────────────────────────────────────────── */
+/* No data message */
 .no-data-msg {
   display: flex;
   flex-direction: column;
@@ -226,7 +226,7 @@ body {
 }
 .no-data-msg span { font-size: 3rem; }
 
-/* ── CARD ─────────────────────────────────────────────────────── */
+/* Card */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -235,7 +235,7 @@ body {
   box-shadow: var(--shadow-sm);
 }
 
-/* ── BUTTONS ──────────────────────────────────────────────────── */
+/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -283,7 +283,7 @@ body {
 
 .btn-sm { padding: 0.35rem 0.8rem; font-size: 0.82rem; }
 
-/* ── FORM CONTROLS ────────────────────────────────────────────── */
+/* Form controls */
 .select-control, .input-control, .select-sm, .search-input {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -303,7 +303,7 @@ body {
 .input-control { width: 100%; }
 .select-sm { font-size: 0.85rem; }
 
-/* ── IMPORT SECTION ───────────────────────────────────────────── */
+/* Import section */
 .drop-zone {
   border: 2px dashed var(--border);
   border-radius: var(--radius-lg);
@@ -376,7 +376,7 @@ body {
 .file-info-name { font-weight: 600; font-size: 0.95rem; }
 .file-info-meta { font-size: 0.82rem; color: var(--text-secondary); }
 
-/* ── EXPLORE SECTION ──────────────────────────────────────────── */
+/* Explore section */
 .toolbar {
   display: flex;
   align-items: center;
@@ -526,7 +526,7 @@ body {
 .type-text    { background: var(--warning-light); color: var(--warning); }
 .type-date    { background: var(--success-light); color: var(--success); }
 
-/* ── ANALYZE SECTION ──────────────────────────────────────────── */
+/* Analyze section */
 .overview-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -613,7 +613,7 @@ body {
 #correlation-section { margin-top: 1rem; }
 #correlation-section h3 { margin-bottom: 1rem; }
 
-/* ── VISUALIZE SECTION ────────────────────────────────────────── */
+/* Visualize section */
 .viz-panel {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -696,7 +696,7 @@ body {
   overflow: hidden;
 }
 
-/* ── PROCESS SECTION ──────────────────────────────────────────── */
+/* Process section */
 .process-layout {
   display: grid;
   grid-template-columns: 1fr 320px;
@@ -777,7 +777,7 @@ body {
   border-radius: var(--radius-sm);
 }
 
-/* ── LOADING OVERLAY ──────────────────────────────────────────── */
+/* Loading overlay */
 .loading-overlay {
   position: fixed;
   inset: 0;
@@ -803,7 +803,7 @@ body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── TOASTS ───────────────────────────────────────────────────── */
+/* Toasts */
 .toast-container {
   position: fixed;
   bottom: 1.5rem;
@@ -837,7 +837,7 @@ body {
 @keyframes slideIn  { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: none; } }
 @keyframes slideOut { to   { opacity: 0; transform: translateX(40px); } }
 
-/* ── KEYBOARD SHORTCUTS MODAL ─────────────────────────────────── */
+/* Keyboard shortcuts modal */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -871,11 +871,11 @@ kbd {
   font-size: 0.82rem;
 }
 
-/* ── UTILITY ──────────────────────────────────────────────────── */
+/* Utility */
 .hidden { display: none !important; }
 h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.75rem; }
 
-/* ── RESPONSIVE ───────────────────────────────────────────────── */
+/* Responsive */
 @media (max-width: 900px) {
   .process-layout { grid-template-columns: 1fr; }
   .process-sidebar { position: static; }
@@ -921,5 +921,5 @@ h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.75rem; }
   .samples-grid { grid-template-columns: 1fr; }
 }
 
-/* ── PLOTLY OVERRIDE FOR THEME ────────────────────────────────── */
+/* Plotly override for theme */
 .js-plotly-plot .plotly .modebar { background: transparent !important; }

@@ -1,10 +1,8 @@
 'use strict';
 
-/* ================================================================
-   DataLens · script.js
-   ================================================================ */
+/* DataLens · script.js */
 
-// ── TRANSLATIONS ─────────────────────────────────────────────────
+// Translations
 const TRANSLATIONS = {
   en: {
     'nav.import': 'Import', 'nav.explore': 'Explore', 'nav.analyze': 'Analyze',
@@ -212,7 +210,7 @@ const TRANSLATIONS = {
   },
 };
 
-// ── SAMPLE DATA ───────────────────────────────────────────────────
+// Sample data
 const SAMPLES = {
   sales: `month,region,product,category,units,revenue,cost
 Jan,North,Widget A,Electronics,120,3600,2100
@@ -316,7 +314,7 @@ Jun,South,Gadget D,Accessories,390,1950,780`,
 2024-01-30,New York,8.4,2.1,0.0,60,11.9`,
 };
 
-// ── STATE ─────────────────────────────────────────────────────────
+// State
 const S = {
   data: null,
   columns: [],
@@ -336,7 +334,7 @@ const S = {
 
 const COLORS = ['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#06b6d4','#84cc16','#f97316','#14b8a6'];
 
-// ── I18N ──────────────────────────────────────────────────────────
+// I18N
 function t(key, vars = {}) {
   let str = (TRANSLATIONS[S.lang] || TRANSLATIONS.en)[key] || key;
   Object.entries(vars).forEach(([k, v]) => { str = str.replace(`{${k}}`, v); });
@@ -365,7 +363,7 @@ function setLanguage(lang) {
   if (S.data) renderSection(S.section);
 }
 
-// ── THEME ─────────────────────────────────────────────────────────
+// Theme
 function setTheme(theme) {
   S.theme = theme;
   document.documentElement.setAttribute('data-theme', theme);
@@ -382,7 +380,7 @@ function toggleTheme() {
   setTheme(S.theme === 'dark' ? 'light' : 'dark');
 }
 
-// ── NAVIGATION ────────────────────────────────────────────────────
+// Navigation
 function navigateTo(section) {
   S.section = section;
   // Update nav links
@@ -408,7 +406,7 @@ function renderSection(section) {
   else if (section === 'process') renderProcess();
 }
 
-// ── DATA UTILITIES ────────────────────────────────────────────────
+// Data utilities
 function detectTypes(data, columns) {
   const types = {};
   columns.forEach(col => {
@@ -488,7 +486,7 @@ function loadData(rows, columns, filename) {
   showToast(t('toast.loaded', {r: rows.length, c: columns.length}), 'success');
 }
 
-// ── IMPORT ────────────────────────────────────────────────────────
+// Import
 function handleFile(file) {
   if (!file) return;
   showLoading();
@@ -529,7 +527,7 @@ function loadSample(name) {
   }, 50);
 }
 
-// ── EXPLORE ───────────────────────────────────────────────────────
+// Explore
 function renderExplore() {
   if (!S.data) return;
   document.getElementById('explore-no-data').classList.add('hidden');
@@ -669,7 +667,7 @@ function renderColumnInfo() {
   });
 }
 
-// ── ANALYZE ───────────────────────────────────────────────────────
+// Analyze
 function renderAnalyze() {
   if (!S.data) return;
   document.getElementById('analyze-no-data').classList.add('hidden');
@@ -807,7 +805,7 @@ function renderCorrelation() {
   Plotly.react('correlation-matrix', [trace], layout, {responsive: true, displayModeBar: false});
 }
 
-// ── VISUALIZE ─────────────────────────────────────────────────────
+// Visualize
 function renderVisualize() {
   if (!S.data) return;
   document.getElementById('visualize-no-data').classList.add('hidden');
@@ -1051,7 +1049,7 @@ function downloadChart() {
   showToast(t('toast.exported'), 'success');
 }
 
-// ── PROCESS ───────────────────────────────────────────────────────
+// Process
 function renderProcess() {
   if (!S.data) return;
   document.getElementById('process-no-data').classList.add('hidden');
@@ -1258,7 +1256,7 @@ function exportCSV() {
   showToast(t('toast.exported'), 'success');
 }
 
-// ── STATS MATH ───────────────────────────────────────────────────
+// Stats math
 function mean(nums) {
   if (!nums.length) return null;
   return nums.reduce((a, b) => a + b, 0) / nums.length;
@@ -1307,7 +1305,7 @@ function pearson(xArr, yArr) {
   return sx && sy ? parseFloat((cov / (sx * sy)).toFixed(4)) : null;
 }
 
-// ── UI UTILITIES ─────────────────────────────────────────────────
+// UI utilities
 function showLoading() { document.getElementById('loading-overlay').classList.remove('hidden'); }
 function hideLoading() { document.getElementById('loading-overlay').classList.add('hidden'); }
 
@@ -1341,7 +1339,7 @@ function escapeRegex(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-// ── KEYBOARD SHORTCUTS ────────────────────────────────────────────
+// Keyboard shortcuts
 function initKeyboard() {
   document.addEventListener('keydown', e => {
     const tag = document.activeElement.tagName;
@@ -1377,7 +1375,7 @@ function initKeyboard() {
   });
 }
 
-// ── INIT ─────────────────────────────────────────────────────────
+// Init
 function init() {
   // Restore preferences
   const savedLang = localStorage.getItem('dl-lang');
